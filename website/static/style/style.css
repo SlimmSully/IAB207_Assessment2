@@ -1,4 +1,4 @@
-body{
+/* body{
   background:#0e0e0e ; 
 }
 
@@ -86,4 +86,96 @@ body{
   color:#fff; 
 }
 
+ */
+ 
+:root {
+  --inkwell: #2C3639;
+  --lunar-eclipse: #3F4E4F;
+  --creme-brulee: #A27B5C;
+  --au-lait: #DCD7C9;
+}
 
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: var(--au-lait);
+  color: var(--inkwell);
+}
+
+/* Navbar */
+header.navbar {
+  background-color: var(--inkwell) !important;
+}
+.navbar-brand {
+  color: var(--creme-brulee) !important;
+}
+.nav-link {
+  color: var(--au-lait) !important;
+}
+.nav-link:hover {
+  color: var(--creme-brulee) !important;
+}
+
+/* Cards */
+.card {
+  border: none;
+  border-radius: 15px;
+  background-color: var(--au-lait);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+.card-title {
+  font-weight: 650;
+  color: var(--creme-brulee);
+}
+.card-text {
+  font-family:'Times New Roman', Times, serif;
+  color: var(--lunar-eclipse);
+}
+
+/* Buttons (icons in header) */
+.btn-outline-light {
+  border-color: var(--creme-brulee);
+  color: var(--creme-brulee);
+}
+.btn-outline-light:hover {
+  background-color: var(--creme-brulee);
+  color: var(--inkwell);
+}
+
+/* Footer */
+.footer {
+  background-color: var(--inkwell);
+  border-top: 2px solid var(--lunar-eclipse);
+  position: relative;
+  bottom: 0;
+  width:100%;
+  height:170px;   /* Height of the footer */
+    }
+
+
+.footer a {
+  color: var(--au-lait);
+}
+
+
+.carousel img {
+  height: 350px;
+  margin: auto;
+  object-fit:cover;
+  background-position: center;
+
+}
+.section-title {
+  font-weight: bold;
+  margin: 30px 0 15px;
+  color: #1a1a2e;
+}
+.event-card img {
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
