@@ -10,7 +10,9 @@ main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
 def index():
-    return '<h1>Starter code for assignment 3<h1>'
+    return render_template('index.html')
+
+
 
 # Event detail view with comments and booking
 @main_bp.route('/event/<int:event_id>', methods=['GET', 'POST'])
@@ -25,8 +27,8 @@ def event_detail(event_id):
     # ----------------------------------------------------- DELETE LATER
 
     event = Event.query.get_or_404(event_id)
-    comments = Comment.query.filter_by(event_id=event.id).order_by(Comment.posted_at.desc()).all()
-    ticket_types = TicketType.query.filter_by(event_id=event.id).all()
+    comments = Comment.query.filter_by(event_id=event_id).order_by(Comment.posted_at.desc()).all()
+    ticket_types = TicketType.query.filter_by(event_id=event.event_id).all()
     booking_message = None
 
     # create both forms
@@ -48,14 +50,14 @@ def event_detail(event_id):
 
         new_comment = Comment(
             content=comment_form.content.data,
-            user_id=current_user.id,
-            event_id=event.id,
-            posted_at=datetime.utcnow()
+            user_id=current_user.user_id,
+            event_id=event.event_id,
+            posted_at=datetime.now()
         )
         db.session.add(new_comment)
         db.session.commit()
         flash('Comment posted successfully!', 'success')
-        return redirect(url_for('main.event_detail', event_id=event.id))
+        return redirect(url_for('main.event_detail', event_id=event.event_id))
 
     # booking submission
     elif booking_form.validate_on_submit() and booking_form.submit.data:
@@ -68,7 +70,7 @@ def event_detail(event_id):
         ticket_type = TicketType.query.get(ticket_type_id)
 
         new_booking = Booking(
-            user_id=current_user.id,
+            user_id=current_user.user_id,
             ticket_type_id=ticket_type_id,
             quantity=quantity
         )
@@ -89,10 +91,13 @@ def booking_confirmation(booking_id):
     event = ticket_type.event
     user = booking.user
 
-    return render_template(
-        'bookingconfirmation.html',
-        booking=booking,
-        ticket_type=ticket_type,
-        event=event,
-        user=user
-    )
+    return render_template('bookingconfirmation.html', booking=booking, ticket_type=ticket_type, event=event, user=user)
+
+# booking history page
+@main_bp.route('/bookings')
+def booking_history():
+    return render_template('bookinghistory.html')
+
+@main_bp.route('/create')
+def create():
+    return render_template('create.html')

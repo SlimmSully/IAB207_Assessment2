@@ -1,40 +1,41 @@
 {% extends "base.html" %}
+{% block title %}{{ event.title }} | Poly Beats{% endblock %}
 {% block content %}
 
 <!-- Event Details Section -->
-<div class="container py-5">
-  <div class="row align-items-center">
+<div class="container my-5">
+  <div class="row">
     <!-- Event Image -->
-    <div class="col-md-6 mb-4 mb-md-0">
+    <div class="col-md-6">
       <img src="{{ url_for('static', filename='img/' + event.img) }}" 
            alt="{{ event.title }}"
-           class="img-fluid rounded shadow">
+           class="img-fluid rounded" alt="Event Image">
     </div>
 
     <!-- Event Info -->
     <div class="col-md-6">
-      <h1 class="fw-bold text-inkwell">{{ event.title }}</h1>
-      <p class="text-muted">{{ event.description }}</p>
-      <ul class="list-unstyled">
-        <li><strong>Date:</strong> {{ event.event_date.strftime('%d %B %Y') }}</li>
-        <li><strong>Time:</strong> {{ event.start_time.strftime('%I:%M %p') }} – {{ event.end_time.strftime('%I:%M %p') }}</li>
-        <li><strong>Location:</strong> {{ event.location }}</li>
-        <li><strong>Status:</strong>
-          <span class="badge 
-            {% if event.status == 'Open' %}bg-success
-            {% elif event.status == 'Sold Out' %}bg-secondary
-            {% elif event.status == 'Cancelled' %}bg-danger
-            {% else %}bg-dark{% endif %}">
-            {{ event.status }}
-          </span>
-        </li>
-      </ul>
+      <h2 class="fw-bold text-inkwell">{{ event.title }}
+        <span id="eventStatus"
+              class="badge 
+              {% if event.status == 'Open' %}bg-success{% elif event.status == 'Cancelled' %}bg-danger{% else %}bg-secondary{% endif %}">
+          {{ event.status }}
+        </span>
+      </h2> 
+      <p><strong>Date:</strong> {{ event.event_date.strftime("%d %B %Y") if event.event_date else "TBA" }}</p>
+      <p><strong>Time:</strong>
+         {% if event.start_time and event.end_time %}
+           {{ event.start_time.strftime("%I:%M %p") }} – {{ event.end_time.strftime("%I:%M %p") }}
+         {% else %}
+           TBA
+         {% endif %}
+      </p>
+      <p><strong>Venue:</strong> {{ event.location }}</p>
+      <p>{{ event.description }}</p>
 
       {% if event.status == 'Open' %}
         <!-- Booking Form -->
-        <div class="card p-3 mt-4 shadow-sm" id="bookingCard">
-          <h5 class="mb-3">Book Tickets</h5>
-
+        <div class="card p-3 mt-3" id="bookingCard">
+          <h5>Book Tickets</h5>
           {% if current_user.is_authenticated %}
           <form method="POST">
             {{ booking_form.hidden_tag() }}
@@ -46,64 +47,60 @@
               {{ booking_form.ticket_quantity.label(class="form-label") }}
               {{ booking_form.ticket_quantity(class="form-control") }}
             </div>
-            {{ booking_form.submit(class="btn btn-success w-100") }}
+            {{ booking_form.submit(class="btn btn-success") }}
           </form>
-
-          {% if booking_message %}
-          <div class="alert alert-success mt-3">{{ booking_message }}</div>
-          {% endif %}
 
           {% else %}
           <p>You must <a href="{{ url_for('auth.login') }}">log in</a> to book tickets.</p>
           {% endif %}
+
+          {% if booking_message %}
+          <div class="alert alert-success mt-3">{{ booking_message }}</div>
+          {% endif %}
         </div>
 
       {% elif event.status == 'Sold Out' %}
-        <button class="btn btn-secondary px-4 mt-2" disabled>Sold Out</button>
+        <button class="btn btn-secondary" disabled>Sold Out</button>
       {% elif event.status == 'Cancelled' %}
-        <button class="btn btn-danger px-4 mt-2" disabled>Cancelled</button>
+        <button class="btn btn-danger" disabled>Cancelled</button>
       {% endif %}
     </div>
   </div>
-</div>
+    <!-- Comments Section -->
+  <div class="mt-5">
+    <h4>Comments</h4>
 
-<!-- Comments Section -->
-<div class="container my-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-8">   
-      <h3 class="mb-4 text-inkwell border-bottom pb-2">Comments</h3>
+    <!-- Existing Comments -->
+    {% for c in comments %}
+    <div class="mb-3 p-3 border rounded bg-light">
+      <strong>{{ c.user.first_name if c.user else 'Anonymous' }}:</strong>
+      {{ c.content }}
+      <br>
+      <small class="text-muted">{{ c.posted_at.strftime("%d %b %Y %I:%M %p") }}</small>
+    </div>
+    {% else %}
+    <p>No comments yet. Be the first to comment!</p>
+    {% endfor %}
 
-      <!-- Existing Comments -->
-      {% for c in comments %}
-      <div class="comment-card border rounded p-3 mb-3 bg-light shadow-sm">
-        <div class="d-flex justify-content-between">
-          <span class="fw-bold text-au-lait">{{ c.user.first_name }} {{ c.user.last_name }}</span>
-          <small class="text-muted">{{ c.posted_at.strftime('%d %b %Y %I:%M %p') }}</small>
-        </div>
-        <p class="mt-2 mb-0 text-inkwell">{{ c.content }}</p>
-      </div>
-      {% else %}
-      <p class="text-muted fst-italic">No comments yet. Be the first to comment!</p>
-      {% endfor %}
-      
-      <hr class="my-4">
-
-      <!-- Comment Form -->
+    <!-- Comment Form -->
+    <div class="card p-3 mt-3">
+      <h5>Leave a Comment</h5>
       {% if current_user.is_authenticated %}
       <form method="POST">
         {{ comment_form.hidden_tag() }}
         <div class="mb-3">
-          {{ comment_form.content.label(class="form-label") }}
-          {{ comment_form.content(class="form-control", rows="3") }}
+          {{ comment_form.content(class="form-control", rows="3", placeholder="Write your comment...") }}
+          {% for err in comment_form.content.errors %}
+          <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
         </div>
         {{ comment_form.submit(class="btn btn-primary") }}
       </form>
       {% else %}
-      <p>You must <a href="{{ url_for('auth.login') }}">log in</a> to post a comment.</p>
+      <p>You must <a href="{{ url_for('auth.login') }}">log in</a> to comment.</p>
       {% endif %}
     </div>
   </div>
 </div>
-
 {% endblock %}
 

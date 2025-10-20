@@ -7,4 +7,4 @@ app = create_app()
 # Push an application context (required by Flask-SQLAlchemy)
 with app.app_context():
     db.create_all()
-    print("✅ Database created successfully at: instance/sitedata.sqlite")
+    print("Database created successfully at: instance/sitedata.sqlite")
