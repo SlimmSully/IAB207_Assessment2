@@ -16,9 +16,11 @@ def create_app():
     app.secret_key = 'somesecretkey'
     # set the app configuration data 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sitedata.sqlite'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     # initialise db with flask app
     db.init_app(app)
-
+    with app.app_context():
+    db.create_all()
     Bootstrap5(app)
     
     # initialise the login manager
