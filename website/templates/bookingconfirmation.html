@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-sm p-4">
+    <h2 class="text-success mb-3">Booking Confirmation</h2>
+    <p>Thank you for your booking, <strong>{{ user.first_name }}</strong>!</p>
+
+    <hr>
+
+    <h5>Event Details</h5>
+    <p><strong>{{ event.title }}</strong></p>
+    <p>{{ event.location }}</p>
+    <p>{{ event.event_date.strftime("%d %B %Y") }} {{ event.start_time.strftime("%I:%M %p") if event.start_time else '' }}</p>
+
+    <hr>
+
+    <h5>Booking Details</h5>
+    <p>Booking ID: <strong>#{{ booking.booking_id }}</strong></p>
+    <p>Ticket Type: <strong>{{ ticket_type.label }}</strong></p>
+    <p>Quantity: <strong>{{ booking.quantity }}</strong></p>
+    <p>Total Price: <strong>${{ "%.2f"|format(ticket_type.price * booking.quantity) }}</strong></p>
+    <p>Booking Time: {{ booking.booked_at.strftime("%d %B %Y, %I:%M %p") }}</p>
+
+    <hr>
+
+    <a href="{{ url_for('main.booking_history') }}" class="btn btn-primary mt-2">View Booking History</a>
+    <a href="{{ url_for('main.index') }}" class="btn btn-secondary mt-2">Back to Home</a>
+  </div>
+</div>
+{% endblock %}
