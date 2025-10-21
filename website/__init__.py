@@ -3,8 +3,10 @@ from flask import Flask
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_bcrypt import Bcrypt  # added
 
 db = SQLAlchemy()
+bcrypt = Bcrypt()  # added
 
 # create a function that creates a web application
 # a web server will run this web application
@@ -16,8 +18,10 @@ def create_app():
     app.secret_key = 'somesecretkey'
     # set the app configuration data 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sitedata.sqlite'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # added
     # initialise db with flask app
     db.init_app(app)
+    bcrypt.init_app(app)  # added
 
     Bootstrap5(app)
     
@@ -35,6 +39,10 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
        return db.session.scalar(db.select(User).where(User.id==user_id))
+
+    # dev only, makes tables on first run
+    with app.app_context():  # added (optional)
+        db.create_all()
 
     from . import views
     app.register_blueprint(views.main_bp)
