@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Booking History | Poly Beats{% endblock %}
+{% block content %}
+
+<main class="container my-5 flex-grow-1">
+
+  <h2 class="mb-5 text-center fw-bold" style="color: var(--creme-brulee);">
+    Your Booking History
+  </h2>
+
+  <div class="row g-4 justify-content-center" id="bookingHistory">
+
+    {% if bookings %}
+      {% for booking, ticket, event in bookings %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow">
+          <img src="{{ url_for('static', filename='img/' + event.img) }}"
+               class="card-img-top"
+               alt="{{ event.title }}">
+          
+          <div class="card-body text-center">
+            <h5 class="card-title fw-bold">{{ event.title }}</h5>
+
+            <p class="card-text mb-1">
+              <strong>Booking ID:</strong> {{ booking.booking_id }}
+            </p>
+
+            <p class="card-text mb-1">
+              <strong>Tickets:</strong> {{ booking.quantity }}
+            </p>
+
+            <p class="card-text small text-muted">
+              <strong>Booked At:</strong> 
+              {{ booking.booked_at.strftime("%d %B %Y %I:%M %p") }}
+            </p>
+
+            {% set ticket_img_url = "https://www.youtube.com/watch?v=xvFZjo5PgG0" %}
+
+            <a href="{{ ticket_img_url }}" target="_blank" class="btn btn-outline-primary btn-sm mt-2">
+              {{ ticket.label }} Ticket
+            </a>
+
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-center">You have no bookings yet.</p>
+    {% endif %}
+
+  </div>
+</main>
+
+{% endblock %}

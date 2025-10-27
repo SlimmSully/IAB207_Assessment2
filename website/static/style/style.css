@@ -1,0 +1,181 @@
+/* body{
+  background:#0e0e0e ; 
+}
+
+.site-panel{
+  background: #f4f3ef;                 
+  border: 2px solid #121212;       
+  box-shadow: 0 10px 40px rgba(0,0,0,.35);
+  border-radius: 8px;
+}
+
+.navbar{
+  background: #0f0f0f !important;
+  border-bottom: 1px solid #222 !important;
+}
+.navbar .navbar-brand, .navbar .nav-link{
+  color:#eae7e1 !important; 
+}
+.navbar .nav-link:hover{
+  color:#fff !important; 
+  text-decoration: underline; 
+}
+
+
+.card-img-top {
+  height: 250px;      
+  object-fit: cover; 
+}
+
+.booking-img-top {
+  width: 100%;        
+  height: 150px;      
+  object-fit: cover;  
+  border-top-left-radius: 8px; 
+  border-bottom-left-radius: 8px;
+  display: block;     
+}
+
+
+.card{
+  background:#ffffff;
+  border:1px solid #dcd8d1;
+  border-radius:8px;
+}
+.card .text-muted{
+  color:#7a7873;
+}
+.card-img-top{ 
+  height:220px; object-fit:cover; 
+}
+
+
+.badge{ 
+  border-radius:999px; 
+  font-weight:600; 
+  padding:.35rem .6rem; 
+}
+.badge-open{ 
+  background:#22863a; 
+  color:#fff; 
+}
+.badge-soldout{ 
+  background:#b01c24; 
+  color:#fff; 
+}
+.badge-cancel{ 
+  background:#4b5563; 
+  color:#fff; 
+}
+
+
+.btn-dark{ 
+  background:#161616; 
+  border-color:#161616; 
+}
+.btn-dark:hover{ 
+  background:#0f0f0f; 
+  border-color:#0f0f0f; 
+}
+.btn-outline-dark{ 
+  border-color:#1d1d1d; 
+  color:#1d1d1d; 
+}
+.btn-outline-dark:hover{ 
+  background:#1d1d1d; 
+  color:#fff; 
+}
+
+ */
+ 
+:root {
+  --inkwell: #2C3639;
+  --lunar-eclipse: #3F4E4F;
+  --creme-brulee: #A27B5C;
+  --au-lait: #DCD7C9;
+}
+
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: var(--au-lait);
+  color: var(--inkwell);
+}
+
+/* Navbar */
+header.navbar {
+  background-color: var(--inkwell) !important;
+}
+.navbar-brand {
+  color: var(--creme-brulee) !important;
+}
+.nav-link {
+  color: var(--au-lait) !important;
+}
+.nav-link:hover {
+  color: var(--creme-brulee) !important;
+}
+
+/* Cards */
+.card {
+  border: none;
+  border-radius: 15px;
+  background-color: var(--au-lait);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+.card-title {
+  font-weight: 650;
+  color: var(--creme-brulee);
+}
+.card-text {
+  font-family:'Times New Roman', Times, serif;
+  color: var(--lunar-eclipse);
+}
+
+/* Buttons (icons in header) */
+.btn-outline-light {
+  border-color: var(--creme-brulee);
+  color: var(--creme-brulee);
+}
+.btn-outline-light:hover {
+  background-color: var(--creme-brulee);
+  color: var(--inkwell);
+}
+
+/* Footer */
+.footer {
+  background-color: var(--inkwell);
+  border-top: 2px solid var(--lunar-eclipse);
+  position: relative;
+  bottom: 0;
+  width:100%;
+  height:170px;   /* Height of the footer */
+    }
+
+
+.footer a {
+  color: var(--au-lait);
+}
+
+
+.carousel img {
+  height: 350px;
+  margin: auto;
+  object-fit:cover;
+  background-position: center;
+
+}
+.section-title {
+  font-weight: bold;
+  margin: 30px 0 15px;
+  color: #1a1a2e;
+}
+.event-card img {
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
