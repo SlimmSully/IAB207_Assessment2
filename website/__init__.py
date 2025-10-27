@@ -15,7 +15,7 @@ def create_app():
     app.debug = True
     app.secret_key = 'somesecretkey'
     # set the app configuration data 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sitedata.sqlite'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../instance/main.db'
     # initialise db with flask app
     db.init_app(app)
 
@@ -34,7 +34,7 @@ def create_app():
     from .models import User
     @login_manager.user_loader
     def load_user(user_id):
-       return db.session.scalar(db.select(User).where(User.id==user_id))
+       return db.session.scalar(db.select(User).where(User.user_id == int(user_id)))
 
     from . import views
     app.register_blueprint(views.main_bp)
