@@ -26,14 +26,12 @@ from flask import request
 
 @main_bp.route('/search')
 def search():
-    query = request.args.get('q', '')
-    if query:
-        # Search title or description (case-insensitive)
-        events = Event.query.filter(
-            Event.title.ilike(f'%{query}%') | Event.description.ilike(f'%{query}%')
-        ).all()
+    query = request.args.get('query', '').strip()
+    if not query:
+        events = Event.query.all()
     else:
-        events = []
+        events = Event.query.filter(Event.title.ilike(f'%{query}%')).all()
+    
     return render_template('search_results.html', events=events, query=query)
 
 

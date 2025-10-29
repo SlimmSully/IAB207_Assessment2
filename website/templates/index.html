@@ -46,56 +46,20 @@
       <div class="col">
         <div class="card h-100 shadow-sm">
           <img src="{{ url_for('static', filename='img/' + event.img) }}" 
-               class="card-img-top" 
-               alt="{{ event.title }}">
+              class="card-img-top" 
+              alt="{{ event.title }}">
           <div class="card-body">
             <h5 class="card-title">{{ event.title }}</h5>
             <p class="card-text">{{ event.description }}</p>
           </div>
           <div class="card-footer bg-transparent">
             <a href="{{ url_for('main.event_detail', event_id=event.event_id) }}" 
-               class="btn btn-primary w-100">View Details</a>
+              class="btn btn-primary w-100">View Details</a>
           </div>
         </div>
       </div>
     {% endfor %}
   </div>
 </div>
-
-      <!-- Popular Events -->
-      <h3 class="section-title">Popular</h3>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="card event-card">
-            <img src="./static/img/Popular1.png" class="card-img-top" alt="Popular Event" />
-            <div class="card-body">
-              <h5 class="card-title">
-                HTTYD Live Orchestra 
-                <span class="badge bg-secondary">Inactive</span>
-              </h5>
-              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
-              <!-- Buttons -->
-              <a href="#" class="btn btn-primary">More Details</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="card event-card">
-            <img src="./static/img/Popular2.png" class="card-img-top" alt="Popular Event" />
-            <div class="card-body">
-              <h5 class="card-title">
-                Green Day Remix Party 
-                <span class="badge bg-dark">Cancelled</span>
-              </h5>
-              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
-              <!-- Buttons -->
-              <a href="#" class="btn btn-primary">More Details</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
 
 {% endblock %}
