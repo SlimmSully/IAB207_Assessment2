@@ -65,22 +65,6 @@
             <!-- Collapsible content -->
             <div class="collapse navbar-collapse justify-content-between" id="navbarMain">
 
-            <!-- Centered nav links -->
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item mx-2">
-                <a class="nav-link fw-medium {% if request.endpoint == 'main.index' %}active{% endif %}"
-                    href="{{ url_for('main.index') }}">Home</a>
-                </li>
-                <li class="nav-item mx-2">
-                <a class="nav-link fw-medium {% if request.endpoint == 'main.CreateEvent' %}active{% endif %}"
-                    href="{{ url_for('main.CreateEvent') }}">Create Event</a>
-                </li>
-                <li class="nav-item mx-2">
-                <a class="nav-link fw-medium {% if request.endpoint == 'main.booking_history' %}active{% endif %}"
-                    href="{{ url_for('main.booking_history') }}">Bookings</a>
-                </li>
-            </ul>
-
             <!-- Right-side shortcuts -->
             <div class="d-flex align-items-center">
                 <a href="{{ url_for('main.CreateEvent') }}"
