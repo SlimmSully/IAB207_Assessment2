@@ -51,6 +51,7 @@ class Event(db.Model):
     status = db.Column(db.String(20), default='Open')  # Open / Sold Out / Cancelled / Inactive
     created_by = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     created_at = db.Column(db.DateTime, default=datetime.now)
+    status = db.Column(db.String(50))
 
     # relationships
     comments = db.relationship('Comment', backref='event', lazy=True)
