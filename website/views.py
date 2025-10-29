@@ -18,7 +18,7 @@ def index():
         events = Event.query.all()
     carousel_events = Event.query.order_by(db.func.random()).limit(3).all()
     return render_template('index.html', events=events, genres=genres,
-                           selected_genre=selected_genre, carousel_events=carousel_events)
+                        selected_genre=selected_genre, carousel_events=carousel_events)
 
 from flask import request
 
