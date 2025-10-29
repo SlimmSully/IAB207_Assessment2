@@ -35,4 +35,13 @@ def create_app():
     from .models import User
     @login_manager.user_loader
     def load_user(user_id):
-       return db.session.scalar(db.select(User).where(User.id == int(user_id)))
+       return db.session.scalar(db.select(User).where(User.user_id == int(user_id)))
+    
+    
+    from . import views
+    app.register_blueprint(views.main_bp)
+
+    from . import auth
+    app.register_blueprint(auth.auth_bp)
+
+    return app
