@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField
-from wtforms.validators import InputRequired, Length, Email, EqualTo
+from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField, SelectField, IntegerField
+from wtforms.validators import InputRequired, Length, Email, EqualTo, DataRequired, NumberRange
 
 # creates the login information
 class LoginForm(FlaskForm):
@@ -19,3 +19,17 @@ class RegisterForm(FlaskForm):
 
     # submit button
     submit = SubmitField("Register")
+
+# form for adding comments on event details page
+class CommentForm(FlaskForm):
+    content = TextAreaField('Write a comment', validators=[InputRequired(), Length(max=500)])
+    submit = SubmitField('Post Comment')
+
+# form for booking tickets
+class BookingForm(FlaskForm):
+    ticket_type = SelectField('Ticket Type', coerce=int, validators=[DataRequired()])
+    ticket_quantity = IntegerField(
+        'Number of Tickets',
+        validators=[DataRequired(), NumberRange(min=1, max=10)]
+    )
+    submit = SubmitField('Book Now')

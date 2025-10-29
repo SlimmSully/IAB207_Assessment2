@@ -4,6 +4,7 @@ from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
+
 db = SQLAlchemy()
 
 # create a function that creates a web application
@@ -15,12 +16,11 @@ def create_app():
     app.debug = True
     app.secret_key = 'somesecretkey'
     # set the app configuration data 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sitedata.sqlite'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../instance/main.db'
     # initialise db with flask app
     db.init_app(app)
-    with app.app_context():
-    db.create_all()
+   #  with app.app_context():
+   #  db.create_all()
     Bootstrap5(app)
     
     # initialise the login manager
@@ -36,7 +36,8 @@ def create_app():
     from .models import User
     @login_manager.user_loader
     def load_user(user_id):
-       return db.session.scalar(db.select(User).where(User.id==user_id))
+       return db.session.scalar(db.select(User).where(User.id == int(user_id)))
+
 
     from . import views
     app.register_blueprint(views.main_bp)
