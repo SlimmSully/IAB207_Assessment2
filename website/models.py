@@ -21,9 +21,9 @@ class User(UserMixin, db.Model):
     comments = db.relationship('Comment', backref='user', lazy=True)
     events = db.relationship('Event', backref='creator', lazy=True)
     
-    # Flask-Login integration
-    def get_id(self):
-        return str(self.user_id)
+    # # Flask-Login integration
+    # def get_id(self):
+    #     return str(self.user_id)
 
     # password utilities
     def set_password(self, password):
@@ -64,13 +64,14 @@ class Comment(db.Model):
 
     comment_id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
-    posted_at = db.Column(db.DateTime, default=datetime.utcnow)
+    posted_at = db.Column(db.DateTime, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     event_id = db.Column(db.Integer, db.ForeignKey('events.event_id'), nullable=False)
 
     def __repr__(self):
-        return f'<Comment {self.id} by User {self.user_id} on Event {self.event_id}>'
+        return f'<Comment {self.user_id} by User {self.user_id} on Event {self.event_id}>'
     
+
 # TICKET TYPE MODEL
 class TicketType(db.Model):
     __tablename__ = 'ticket_types'
@@ -94,13 +95,17 @@ class Booking(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     ticket_type_id = db.Column(db.Integer, db.ForeignKey('ticket_types.ticket_type_id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
-    booked_at = db.Column(db.DateTime, default=datetime.utcnow)
+    booked_at = db.Column(db.DateTime, default=datetime.now)
 
     user = db.relationship('User', backref='bookings', lazy=True)
     ticket_type = db.relationship('TicketType', backref='bookings', lazy=True)
 
     def __repr__(self):
-        return f'<Booking user={self.user_id}, ticket={self.ticket_type_id}, qty={self.quantity}>'
+        return f'<Booking user={self.user_id}, ticket={self.user_id}, qty={self.quantity}>'
+    
+    #     # Flask-Login integration
+    # def get_id(self):
+    #     return str(self.user_id)
 
 
 # class Order(db.Model):

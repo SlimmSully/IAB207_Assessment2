@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField, SelectField, IntegerField
+from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField, SelectField, IntegerField, FileField,RadioField,DateField,DateTimeField,TimeField
 from wtforms.validators import InputRequired, Length, Email, EqualTo, DataRequired, NumberRange
 
 # creates the login information
@@ -33,3 +33,26 @@ class BookingForm(FlaskForm):
         validators=[DataRequired(), NumberRange(min=1, max=10)]
     )
     submit = SubmitField('Book Now')
+
+
+class EventForm(FlaskForm):
+    title = StringField("Title", validators=[DataRequired()])
+    genre = SelectField("Genre", choices=[
+        ("Hip Hop","Hip Hop"), ("R&B","R&B"), ("Jazz","Jazz"),
+        ("Rap","Rap"), ("Electronic","Electronic"), ("Comedy","Comedy")
+    ], validators=[DataRequired()])
+    description = TextAreaField("Description", validators=[DataRequired()])
+    location = StringField("Location", validators=[DataRequired()] )
+    event_date = DateField("Date", format="%Y-%m-%d", validators=[DataRequired()])
+    start_time = TimeField("Start time", format="%H:%M", validators=[DataRequired()])
+    end_time   = TimeField("End time", format="%H:%M")
+    img = FileField("Upload Image")
+    submit = SubmitField("Save event")
+
+class TicketForm(FlaskForm):
+    Label = StringField("Ticket Type", validators=[InputRequired()])
+    Price = IntegerField("Price", validators=[InputRequired()])
+    Quota = IntegerField("quota for profit")
+    
+
+    
