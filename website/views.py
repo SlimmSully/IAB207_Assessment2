@@ -119,7 +119,7 @@ def booking_history():
         db.session.query(Booking, TicketType, Event)
         .join(TicketType, Booking.ticket_type_id == TicketType.ticket_type_id)
         .join(Event, Event.event_id == TicketType.event_id)
-        .filter(Booking.user_id == current_user.user_id)
+        #.filter(Booking.user_id == current_user.user_id)
         .all()
     )
 
