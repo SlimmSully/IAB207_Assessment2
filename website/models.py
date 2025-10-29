@@ -4,13 +4,9 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-class User(db.Model, UserMixin):
+# USER MODEL
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
-    # id = db.Column(db.Integer, primary_key=True)
-    # name = db.Column(db.String(80), unique=True, nullable=False)
-    # email = db.Column(db.String(255), unique=True, nullable=False)
-    # password_hash = db.Column(db.String(255), nullable=False)
-    # created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
@@ -55,6 +51,7 @@ class Event(db.Model):
     status = db.Column(db.String(20), default='Open')  # Open / Sold Out / Cancelled / Inactive
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'))
     created_at = db.Column(db.DateTime, default=datetime.now)
+    status = db.Column(db.String(50))
 
     # relationships
     comments = db.relationship('Comment', backref='event', lazy=True)

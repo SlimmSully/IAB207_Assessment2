@@ -7,8 +7,8 @@
     {% for event in carousel_events %}
       <div class="carousel-item {% if loop.first %}active{% endif %}">
         <img src="{{ url_for('static', filename='img/' + event.img) }}" 
-             class="d-block w-100 carousel-image" 
-             alt="{{ event.title }}">
+            class="d-block w-100 carousel-image" 
+            alt="{{ event.title }}">
         <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
           <h5>{{ event.title }}</h5>
           <p>{{ event.description[:100] }}...</p>
@@ -61,5 +61,41 @@
     {% endfor %}
   </div>
 </div>
+
+      <!-- Popular Events -->
+      <h3 class="section-title">Popular</h3>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card event-card">
+            <img src="./static/img/Popular1.png" class="card-img-top" alt="Popular Event" />
+            <div class="card-body">
+              <h5 class="card-title">
+                HTTYD Live Orchestra 
+                <span class="badge bg-secondary">Inactive</span>
+              </h5>
+              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
+              <!-- Buttons -->
+              <a href="#" class="btn btn-primary">More Details</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card event-card">
+            <img src="./static/img/Popular2.png" class="card-img-top" alt="Popular Event" />
+            <div class="card-body">
+              <h5 class="card-title">
+                Green Day Remix Party 
+                <span class="badge bg-dark">Cancelled</span>
+              </h5>
+              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
+              <!-- Buttons -->
+              <a href="#" class="btn btn-primary">More Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
 {% endblock %}
