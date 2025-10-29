@@ -12,8 +12,29 @@ main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
 def index():
-    return render_template('index.html')
+    selected_genre = request.args.get('genre')
+    genres = [g[0] for g in db.session.query(Event.genre).distinct().all()]
+    if selected_genre:
+        events = Event.query.filter_by(genre=selected_genre).all()
+    else:
+        events = Event.query.all()
+    carousel_events = Event.query.order_by(db.func.random()).limit(3).all()
+    return render_template('index.html', events=events, genres=genres,
+                           selected_genre=selected_genre, carousel_events=carousel_events)
 
+from flask import request
+
+@main_bp.route('/search')
+def search():
+    query = request.args.get('q', '')
+    if query:
+        # Search title or description (case-insensitive)
+        events = Event.query.filter(
+            Event.title.ilike(f'%{query}%') | Event.description.ilike(f'%{query}%')
+        ).all()
+    else:
+        events = []
+    return render_template('search_results.html', events=events, query=query)
 
 
 # Event detail view with comments and booking
@@ -118,7 +139,7 @@ def CreateEvent():
 
     if form.validate_on_submit():
         img_file = request.files.get("img_file")
-        filename = "default.png"
+        filename = "default.jpeg"
 
         if img_file and img_file.filename != "":
             filename = secure_filename(img_file.filename)
