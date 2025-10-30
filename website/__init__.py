@@ -36,8 +36,7 @@ def create_app():
 
     from . import auth
     app.register_blueprint(auth.auth_bp)
-
-    # error handlers required by rubric
+    
     from flask import render_template
 
     @app.errorhandler(404)
