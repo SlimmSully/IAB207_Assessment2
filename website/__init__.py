@@ -14,7 +14,8 @@ def create_app():
     app.debug = True
     app.secret_key = 'somesecretkey'
 
-    # Configuration of database
+    # Configuration of database\
+    
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../instance/main.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     Bootstrap5(app)
