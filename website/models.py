@@ -21,9 +21,8 @@ class User(UserMixin, db.Model):
     comments = db.relationship('Comment', backref='user', lazy=True)
     events = db.relationship('Event', backref='creator', lazy=True)
     
-    # # Flask-Login integration
-    # def get_id(self):
-    #     return str(self.user_id)
+    def get_id(self):
+        return str(self.user_id)
 
     # password utilities
     def set_password(self, password):
@@ -103,9 +102,6 @@ class Booking(db.Model):
     def __repr__(self):
         return f'<Booking user={self.user_id}, ticket={self.user_id}, qty={self.quantity}>'
     
-    #     # Flask-Login integration
-    # def get_id(self):
-    #     return str(self.user_id)
+    def get_id(self):
+        return str(self.user_id)
 
-
-# class Order(db.Model):

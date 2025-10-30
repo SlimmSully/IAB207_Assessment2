@@ -19,73 +19,41 @@
 
     <body>
         <!-- navbar -->
-        <header class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-2">
             <div class="container">
-                <!-- Brand -->
-                <a class="navbar-brand fw-bold fs-4" href="{{ url_for('main.index') }}">
-                Amp'd
-                </a>
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">Amp'd</a>
 
-                <!-- Search Bar-->
-                <form class="d-flex ms-auto" role="search" method="get" action="{{ url_for('main.search') }}">
-                <input 
-                    class="form-control me-2" 
-                    type="search" 
-                    placeholder="Search events..." 
-                    aria-label="Search" 
-                    name="q"
-                    value="{{ request.args.get('q', '') }}"
-                    style="font-family: 'Poiret One', sans-serif;"
-                >
-                <button class="btn btn-outline-light" type="submit">Search</button>
-                </form>
+            <!-- Search Bar -->
+            <form class="navbar-search d-flex align-items-center ms-3"
+                role="search"
+                action="{{ url_for('main.search') }}" method="GET">
+                <input class="form-control search-input" 
+                        type="search" 
+                        placeholder="Search events..." 
+                        name="query">
+                <button class="btn btn-outline-light search-btn" type="submit">Search</button>
+            </form>
 
 
 
 
-                <!-- links -->
-                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item mx-2">
-                            <a class="nav-link text-light fw-medium" href="{{ url_for('main.index') }}">Home</a>
-                        </li>
-                        <li class="nav-item mx-2">
-                            <a class="nav-link text-light fw-medium" href="{{ url_for('main.CreateEvent') }}">Create Event</a>
-                        </li>
-                        
-                    </ul>
-                </div>
 
-            <!-- Mobile toggle -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
-                    aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Collapsible content -->
-            <div class="collapse navbar-collapse justify-content-between" id="navbarMain">
-
-            <!-- Right-side shortcuts -->
-            <div class="d-flex align-items-center">
-                <a href="{{ url_for('main.CreateEvent') }}"
-                class="btn btn-outline-light btn-sm rounded-circle me-2"
-                title="Create Event">🎟️</a>
-
-                <a href="{{ url_for('main.booking_history') }}"
-                class="btn btn-outline-light btn-sm rounded-circle me-2"
-                title="Booking History">📜</a>
-
+            <!-- Nav links (change depending on user login state) -->
+            <ul class="navbar-nav">
                 {% if current_user.is_authenticated %}
-                <a href="{{ url_for('auth.login') }}"
-                    class="btn btn-outline-light btn-sm rounded-circle"
-                    title="Login">🔒</a>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.CreateEvent') }}">Create Event</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.booking_history') }}">Bookings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                    
+                    <li class="nav-item"><span class="nav-link disabled">Hi, {{ current_user.username }}!</span></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Login</a></li>
                 {% endif %}
+            </ul>
             </div>
-
-            </div>
-        </div>
-        </header>
-
+        </nav>
 
         <!-- main  -->
         <main class="flex-shrink-0">

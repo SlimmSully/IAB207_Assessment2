@@ -20,20 +20,18 @@ def index():
         events = Event.query.all()
     carousel_events = Event.query.order_by(db.func.random()).limit(3).all()
     return render_template('index.html', events=events, genres=genres,
-                           selected_genre=selected_genre, carousel_events=carousel_events)
+                        selected_genre=selected_genre, carousel_events=carousel_events)
 
 from flask import request
 
 @main_bp.route('/search')
 def search():
-    query = request.args.get('q', '')
-    if query:
-        # Search title or description (case-insensitive)
-        events = Event.query.filter(
-            Event.title.ilike(f'%{query}%') | Event.description.ilike(f'%{query}%')
-        ).all()
+    query = request.args.get('query', '').strip()
+    if not query:
+        events = Event.query.all()
     else:
-        events = []
+        events = Event.query.filter(Event.title.ilike(f'%{query}%')).all()
+    
     return render_template('search_results.html', events=events, query=query)
 
 
@@ -112,14 +110,14 @@ def booking_confirmation(booking_id):
 
 # booking history page
 @main_bp.route("/bookinghistory")
-#@login_required
+@login_required
 def booking_history():
     
     bookings = (
         db.session.query(Booking, TicketType, Event)
         .join(TicketType, Booking.ticket_type_id == TicketType.ticket_type_id)
         .join(Event, Event.event_id == TicketType.event_id)
-        #.filter(Booking.user_id == current_user.user_id)
+        .filter(Booking.user_id == current_user.user_id)
         .all()
     )
 
@@ -127,6 +125,7 @@ def booking_history():
 
 
 @main_bp.route("/CreateEvent", methods=["GET", "POST"])
+@login_required
 def CreateEvent():
     form = EventForm()
 
@@ -173,16 +172,17 @@ def CreateEvent():
     return render_template("CreateEvent.html", form=form)
 
 
-
 @main_bp.route("/EditEvent/<int:event_id>", methods=["GET", "POST"])
+@login_required
 def EditEvent(event_id):
     ev = Event.query.get_or_404(event_id)
     form = EventForm(obj=ev)
-
+    if ev.created_by != getattr(current_user, "user_id", None):
+        flash("You cannot edit an event you do not own.", "warning")
+        return redirect(url_for("main.event_detail", event_id=event_id))
     ticket_types = TicketType.query.filter_by(event_id=event_id).all()
 
     if form.validate_on_submit():
-        # Update event fields
         ev.title = form.title.data
         ev.genre = form.genre.data
         ev.description = form.description.data
@@ -192,7 +192,6 @@ def EditEvent(event_id):
         ev.end_time = form.end_time.data
         ev.status = request.form.get("status")
 
-        # Handle image update
         img_file = request.files.get("img_file")
         if img_file and img_file.filename != "":
             filename = secure_filename(img_file.filename)
@@ -200,11 +199,10 @@ def EditEvent(event_id):
             img_file.save(save_path)
             ev.img = filename
 
-        # ✅ Handle TicketType updates intelligently
         form_labels = request.form.getlist("ticket_label[]")
         form_prices = request.form.getlist("ticket_price[]")
         form_quotas = request.form.getlist("ticket_quota[]")
-        form_ids = request.form.getlist("ticket_id[]")  # hidden inputs for existing tickets
+        form_ids = request.form.getlist("ticket_id[]")  
 
         existing_ticket_ids = {str(t.ticket_type_id): t for t in ticket_types}
 
