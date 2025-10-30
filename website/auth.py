@@ -1,6 +1,6 @@
 from flask import Blueprint, flash, render_template, request, url_for, redirect
 from flask_login import login_user, login_required, logout_user
-from werkzeug.security import generate_password_hash, check_password_hash  
+from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from .forms import LoginForm, RegisterForm
 from . import db
@@ -11,7 +11,8 @@ auth_bp = Blueprint('auth', __name__)
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = db.session.scalar(db.select(User).where(User.name == form.user_name.data))
+        email = form.user_name.data.lower().strip()
+        user = db.session.scalar(db.select(User).where(User.email == email))
         if not user or not check_password_hash(user.password_hash, form.password.data):
             flash('Incorrect username or password')
             return render_template('login.html', form=form), 401
@@ -24,14 +25,22 @@ def login():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        exists = db.session.scalar(
-            db.select(User).where((User.name == form.user_name.data) | (User.email == form.email.data))
-        )
+        email = form.email.data.lower().strip()
+        # unique-by-email
+        exists = db.session.scalar(db.select(User).where(User.email == email))
         if exists:
             flash('Username or email already in use')
             return render_template('register.html', form=form), 409
+
         pw_hash = generate_password_hash(form.password.data)
-        user = User(name=form.user_name.data, email=form.email.data.lower(), password_hash=pw_hash)
+        user = User(
+            first_name = form.first_name.data.strip(),
+            last_name  = form.last_name.data.strip(),
+            email      = email,
+            phone      = form.phone.data.strip() if form.phone.data else None,
+            address    = form.address.data.strip() if form.address.data else None,
+            password_hash = pw_hash
+        )
         db.session.add(user)
         db.session.commit()
         flash('Account created. You can log in now.')
