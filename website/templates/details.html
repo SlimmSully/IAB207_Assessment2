@@ -15,12 +15,14 @@
     <!-- Event Info -->
     <div class="col-md-6">
       <!-- create button for event details -->
-      <div class="d-flex justify-content-end mb-2">
-        <a class="btn btn-warning btn-sm"
-          href="{{ url_for('main.EditEvent', event_id=event.event_id) }}">
-          Edit Event
-        </a>
-      </div>
+       {% if current_user.is_authenticated %}
+        <div class="d-flex justify-content-end mb-2">
+          <a class="btn btn-warning btn-sm"
+            href="{{ url_for('main.EditEvent', event_id=event.event_id) }}">
+            Edit Event
+          </a>
+        </div>
+        {% endif %}
       <h2 class="fw-bold text-inkwell">{{ event.title }}
         <span id="eventStatus"
               class="badge 
