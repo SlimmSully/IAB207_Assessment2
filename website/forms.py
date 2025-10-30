@@ -42,7 +42,9 @@ class EventForm(FlaskForm):
     title       = StringField("Title", validators=[DataRequired()])
     genre       = SelectField("Genre", choices=[
         ("Hip Hop","Hip Hop"), ("R&B","R&B"), ("Jazz","Jazz"),
-        ("Rap","Rap"), ("Electronic","Electronic"), ("Comedy","Comedy")
+        ("Rap","Rap"), ("Electronic","Electronic"), ("Comedy","Comedy"), 
+        ("Rock and Roll","Rock and Roll"), ("Alt Rock","Alt Rock"), ("Country","Country"),
+        ("Indie","Indie"), ("Heavy Metal","Heavy Metal"), ("Classical","Classical")
     ], validators=[DataRequired()])
     description = TextAreaField("Description", validators=[DataRequired()])
     location    = StringField("Location", validators=[DataRequired()])

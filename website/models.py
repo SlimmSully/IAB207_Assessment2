@@ -105,5 +105,3 @@ class Booking(db.Model):
     def get_id(self):
         return str(self.user_id)
 
-
-# class Order(db.Model):

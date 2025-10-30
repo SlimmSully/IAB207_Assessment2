@@ -43,7 +43,12 @@
                 {% if current_user.is_authenticated %}
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.CreateEvent') }}">Create Event</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.booking_history') }}">Bookings</a></li>
+                    <form action="{{ url_for('auth.logout') }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-link nav-link" style="text-decoration:none;">Logout</button>
+                    </form>
+
+                    
                     <li class="nav-item"><span class="nav-link disabled">Hi, {{ current_user.username }}!</span></li>
                 {% else %}
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Home</a></li>

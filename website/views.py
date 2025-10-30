@@ -14,15 +14,16 @@ main_bp = Blueprint('main', __name__)
 def index():
     selected_genre = request.args.get('genre')
     genres = [g[0] for g in db.session.query(Event.genre).distinct().all()]
-    if selected_genre:
+
+    if selected_genre and selected_genre != "All":
         events = Event.query.filter_by(genre=selected_genre).all()
     else:
         events = Event.query.all()
-    carousel_events = Event.query.order_by(db.func.random()).limit(3).all()
-    return render_template('index.html', events=events, genres=genres,
-                        selected_genre=selected_genre, carousel_events=carousel_events)
 
-from flask import request
+    carousel_events = Event.query.order_by(db.func.random()).limit(3).all()
+
+    return render_template(
+        'index.html',events=events,genres=genres,selected_genre=selected_genre,carousel_events=carousel_events)
 
 @main_bp.route('/search')
 def search():
@@ -182,7 +183,7 @@ def EditEvent(event_id):
         return redirect(url_for("main.event_detail", event_id=event_id))
     ticket_types = TicketType.query.filter_by(event_id=event_id).all()
 
-    if form.validate_on_submit():            
+    if form.validate_on_submit():
         ev.title = form.title.data
         ev.genre = form.genre.data
         ev.description = form.description.data
@@ -197,21 +198,35 @@ def EditEvent(event_id):
             filename = secure_filename(img_file.filename)
             save_path = os.path.join("website", "static", "img", filename)
             img_file.save(save_path)
-            ev.img = filename 
+            ev.img = filename
 
-        TicketType.query.filter_by(event_id=event_id).delete()
+        form_labels = request.form.getlist("ticket_label[]")
+        form_prices = request.form.getlist("ticket_price[]")
+        form_quotas = request.form.getlist("ticket_quota[]")
+        form_ids = request.form.getlist("ticket_id[]")  
 
-        ticket_labels = request.form.getlist("ticket_label[]")
-        ticket_prices = request.form.getlist("ticket_price[]")
-        ticket_quotas = request.form.getlist("ticket_quota[]")
+        existing_ticket_ids = {str(t.ticket_type_id): t for t in ticket_types}
 
-        for label, price, quota in zip(ticket_labels, ticket_prices, ticket_quotas):
-            db.session.add(TicketType(
-                event_id=event_id,
-                label=label,
-                price=float(price),
-                quota=int(quota)
-            ))
+        for i, (label, price, quota) in enumerate(zip(form_labels, form_prices, form_quotas)):
+            ticket_id = form_ids[i] if i < len(form_ids) else None
+            if ticket_id and ticket_id in existing_ticket_ids:
+                t = existing_ticket_ids[ticket_id]
+                t.label = label
+                t.price = float(price)
+                t.quota = int(quota)
+            else:
+                new_ticket = TicketType(
+                    event_id=event_id,
+                    label=label,
+                    price=float(price),
+                    quota=int(quota)
+                )
+                db.session.add(new_ticket)
+
+        submitted_ids = set(form_ids)
+        for existing_id, existing_ticket in existing_ticket_ids.items():
+            if existing_id not in submitted_ids:
+                db.session.delete(existing_ticket)
 
         db.session.commit()
         flash("Event updated successfully!", "success")

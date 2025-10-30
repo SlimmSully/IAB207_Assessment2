@@ -52,19 +52,21 @@
       </div>
 
       <hr class="my-4">
-      <h2 class="h4 mb-3">Tickets</h2>
+      <h2 class="h4 mb-3">Types of Tickets</h2>
 
       <div id="ticket-types-wrapper">
-
-        <div class="row g-3 ticket-type-row mb-2">
+        <div class="row g-3 align-items-center ticket-type-row mb-2">
           <div class="col-md-4">
-            <input class="form-control" name="ticket_label[]" placeholder="Label (e.g., Standard)" required>
+            <input class="form-control" name="ticket_label[]" placeholder="Label (e.g., Standard, VIP)" required>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <input type="number" class="form-control" name="ticket_price[]" placeholder="Price $" min="0" required>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <input type="number" class="form-control" name="ticket_quota[]" placeholder="Quota" min="1" required>
+          </div>
+          <div class="col-md-2 text-end">
+            <button type="button" class="btn btn-outline-danger remove-ticket-btn">Remove</button>
           </div>
         </div>
       </div>
@@ -77,7 +79,6 @@
         <button type="submit" class="btn btn-dark">Save event</button>
         <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">Cancel</a>
       </div>
-
     </form>
   </div>
 </main>
@@ -87,22 +88,45 @@ document.getElementById("add-ticket-btn").addEventListener("click", function () 
   const wrapper = document.getElementById("ticket-types-wrapper");
 
   const newRow = document.createElement("div");
-  newRow.classList.add("row", "g-3", "ticket-type-row", "mb-2");
+  newRow.classList.add("row", "g-3", "align-items-center", "ticket-type-row", "mb-2");
 
   newRow.innerHTML = `
     <div class="col-md-4">
-      <input class="form-control" name="ticket_label[]" placeholder="Label (e.g., VIP)" required>
+      <input class="form-control" name="ticket_label[]" placeholder="Label (e.g., Standard, VIP)" required>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <input type="number" class="form-control" name="ticket_price[]" placeholder="Price $" min="0" required>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <input type="number" class="form-control" name="ticket_quota[]" placeholder="Quota" min="1" required>
+    </div>
+    <div class="col-md-2 text-end">
+      <button type="button" class="btn btn-outline-danger remove-ticket-btn">Remove</button>
     </div>
   `;
 
   wrapper.appendChild(newRow);
+  updateRemoveButtons();
 });
+
+function updateRemoveButtons() {
+  const wrapper = document.getElementById("ticket-types-wrapper");
+  const buttons = wrapper.querySelectorAll(".remove-ticket-btn");
+
+  buttons.forEach(btn => {
+    btn.onclick = () => {
+      const rows = wrapper.querySelectorAll(".ticket-type-row");
+      if (rows.length > 1) {
+        btn.closest(".ticket-type-row").remove();
+      } else {
+        alert("At least one ticket type is required.");
+      }
+    };
+  });
+}
+
+// Initialize remove buttons on page load
+updateRemoveButtons();
 </script>
 
 {% endblock %}
