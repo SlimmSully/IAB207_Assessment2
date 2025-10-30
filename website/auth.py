@@ -1,6 +1,7 @@
 from flask import Blueprint, flash, render_template, request, url_for, redirect
 from flask_login import login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import func
 from .models import User
 from .forms import LoginForm, RegisterForm
 from . import db
@@ -11,10 +12,13 @@ auth_bp = Blueprint('auth', __name__)
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        email = form.user_name.data.lower().strip()
-        user = db.session.scalar(db.select(User).where(User.email == email))
-        if not user or not check_password_hash(user.password_hash, form.password.data):
-            flash('Incorrect username or password')
+        email = (form.user_name.data or "").strip().lower()
+        user = db.session.scalar( db.select(User).where(func.lower(User.email) == email))
+        if not user:
+            flash('No account for that email')
+            return render_template('login.html', form=form), 401
+        if not check_password_hash(user.password_hash, form.password.data):
+            flash('Incorrect password')
             return render_template('login.html', form=form), 401
         login_user(user)
         nextp = request.args.get('next')
@@ -25,9 +29,8 @@ def login():
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        email = form.email.data.lower().strip()
-        # unique-by-email
-        exists = db.session.scalar(db.select(User).where(User.email == email))
+        email = (form.email.data or "").strip().lower()
+        exists = db.session.scalar(db.select(User).where(func.lower(User.email) == email))
         if exists:
             flash('Username or email already in use')
             return render_template('register.html', form=form), 409
