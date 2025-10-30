@@ -112,14 +112,14 @@ def booking_confirmation(booking_id):
 
 # booking history page
 @main_bp.route("/bookinghistory")
-#@login_required
+@login_required
 def booking_history():
     
     bookings = (
         db.session.query(Booking, TicketType, Event)
         .join(TicketType, Booking.ticket_type_id == TicketType.ticket_type_id)
         .join(Event, Event.event_id == TicketType.event_id)
-        #.filter(Booking.user_id == current_user.user_id)
+        .filter(Booking.user_id == current_user.user_id)
         .all()
     )
 
@@ -127,6 +127,7 @@ def booking_history():
 
 
 @main_bp.route("/CreateEvent", methods=["GET", "POST"])
+@login_required
 def CreateEvent():
     form = EventForm()
 
@@ -173,12 +174,14 @@ def CreateEvent():
     return render_template("CreateEvent.html", form=form)
 
 
-
 @main_bp.route("/EditEvent/<int:event_id>", methods=["GET", "POST"])
+@login_required
 def EditEvent(event_id):
     ev = Event.query.get_or_404(event_id)
     form = EventForm(obj=ev)
-
+    if ev.created_by != getattr(current_user, "user_id", None):
+        flash("You cannot edit an event you do not own.", "warning")
+        return redirect(url_for("main.event_detail", event_id=event_id))
     ticket_types = TicketType.query.filter_by(event_id=event_id).all()
 
     if form.validate_on_submit():            
