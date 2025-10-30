@@ -12,13 +12,26 @@ main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
 def index():
-    selected_genre = request.args.get('genre')
-    genres = [g[0] for g in db.session.query(Event.genre).distinct().all()]
+    # Show all events to everyone
+    events = Event.query.all()
 
-    if selected_genre and selected_genre != "All":
-        events = Event.query.filter_by(genre=selected_genre).all()
-    else:
-        events = Event.query.all()
+    # Optional: load genres for your dropdown if you're using it
+    genres = [g[0] for g in db.session.query(Event.genre).distinct()]
+    selected_genre = request.args.get('genre', 'All')
+
+    if selected_genre != 'All':
+        events = [event for event in events if event.genre == selected_genre]
+
+    # Optional: select some for carousel
+    carousel_events = events[:3] if events else []
+
+    return render_template(
+        'index.html',
+        events=events,
+        carousel_events=carousel_events,
+        genres=genres,
+        selected_genre=selected_genre
+    )
 
     carousel_events = Event.query.order_by(db.func.random()).limit(3).all()
 
