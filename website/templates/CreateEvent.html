@@ -57,7 +57,7 @@
       <div id="ticket-types-wrapper">
         <div class="row g-3 align-items-center ticket-type-row mb-2">
           <div class="col-md-4">
-            <input class="form-control" name="ticket_label[]" placeholder="Label (e.g., VIP)" required>
+            <input class="form-control" name="ticket_label[]" placeholder="Label (e.g., Standard, VIP)" required>
           </div>
           <div class="col-md-3">
             <input type="number" class="form-control" name="ticket_price[]" placeholder="Price $" min="0" required>
@@ -92,7 +92,7 @@ document.getElementById("add-ticket-btn").addEventListener("click", function () 
 
   newRow.innerHTML = `
     <div class="col-md-4">
-      <input class="form-control" name="ticket_label[]" placeholder="Label (e.g., VIP)" required>
+      <input class="form-control" name="ticket_label[]" placeholder="Label (e.g., Standard, VIP)" required>
     </div>
     <div class="col-md-3">
       <input type="number" class="form-control" name="ticket_price[]" placeholder="Price $" min="0" required>
