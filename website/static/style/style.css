@@ -1,3 +1,6 @@
+/* ===============================
+  THEME VARIABLES
+  =============================== */
 :root {
   --inkwell: #2C3639;
   --lunar-eclipse: #3F4E4F;
@@ -5,162 +8,319 @@
   --au-lait: #DCD7C9;
 }
 
+/* ===============================
+    BASE STYLES
+  =============================== */
 body {
   font-family: "Poiret One", sans-serif;
-  font-weight: 400;
+  /* font-weight: bolder; */
   font-style: normal;
-  font-weight: bolder;
   background-color: var(--au-lait);
   color: var(--inkwell);
+  padding-top: 80px; /* Prevent navbar overlap */
 }
 
-
-
-/* Center all page content and limit its width */
 .main-container {
-  max-width: 1400px; /* adjust for your taste */
+  max-width: 1400px;
   margin: 0 auto;
 }
-/* Navbar */
-header.navbar {
+
+/* ===============================
+    NAVBAR STYLING
+  =============================== */
+.navbar {
   background-color: var(--inkwell) !important;
   font-family: "Fascinate", system-ui;
   font-weight: 700;
-  padding-top: 0.3rem !important;  /* reduce vertical padding */
-  padding-bottom: 0.3rem !important;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  min-height: 50px; /* optional safety limit */
-}
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
 
-/* Navbar brand (logo/text) */
+  /* Height control */
+  min-height: 90px; /* makes it visibly taller */
+  padding: 1rem 2rem !important;
+
+  /* Align all items centrally */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+
+  /* Nav Bar behaviour for mobile */
+  transition: padding 2s ease, height 2s ease, background-color 2s ease;
+  padding: 1rem 2rem;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+} 
+
+
+/* --- Brand --- */
 .navbar-brand {
   color: var(--creme-brulee) !important;
-  font-family: "Fascinate", system-ui;
-  font-weight: 700;
-  font-size: 3rem !important;
-  padding: 0.5rem !important; /* remove extra padding from brand */
-  margin: 0 !important;
-  line-height: 1; /* keeps text tighter */
+  letter-spacing: 1px;
+  font-size: 1.8rem;
 }
 
-/* Navbar links */
+/* --- Nav Links --- */
 .navbar-nav .nav-link {
   color: var(--creme-brulee) !important;
   font-family: "Poiret One", sans-serif;
-  font-size: 1.1rem;
-  
-  margin: 0 0.4rem;
-  padding-top: 0.2rem !important;
-  padding-bottom: 0.2rem !important;
+  font-size: 1.1rem; /* slightly larger for readability */
+  transition: color 0.2s ease;
 }
 
-/* --- Navbar Search Bar Styling --- */
-.navbar-search {
-  display: flex;
-  align-items: center;
-  position: relative;
-  top: 8px; 
+.navbar-nav .nav-link:hover {
+  color: var(--au-lait) !important;
 }
 
-.navbar-search .search-input {
-  width: 320px;           
-  height: 38px;           /* consistent size */
+/* --- Greeting Text --- */
+.user-greeting {
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* --- Toggler (mobile menu icon) --- */
+.custom-toggler {
+  border: none;
+  filter: invert(90%) sepia(20%) saturate(80%) hue-rotate(20deg);
+}
+
+/* ===============================
+    NAVBAR SEARCH BAR
+  =============================== */
+.search-input {
+  width: 320px;
+  height: 38px;
   font-size: 0.9rem;
-  border-radius: 15px !important;     /* less rounded */
+  font-weight: bolder;
+  font-family: "Poiret One", sans-serif;
+  border-radius: 10px !important;
   border: 1px solid #ccc;
-  background-color: #f8f9fa;
-  color: #333;
-  margin-right: 10px;     /* space between input and button */
+  background-color: var(--au-lait);
+  color: var(--inkwell);
+  margin-right: 10px;
   transition: all 0.2s ease-in-out;
 }
 
-.navbar-search .search-input:focus {
-  outline: none;
-  border-color: #aaa;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+.search-input::placeholder {
+  color: var(--lunar-eclipse); /* matches rest of design tone */
+  font-family: "Poiret One", sans-serif;
+  opacity: 0.8;
 }
 
-.navbar-search .search-btn {
-  height: 38px;
+.search-btn {
+  height: 40px;
   line-height: 1;
-  border-radius: 15px !important; 
-  padding: 0 14px;
+  border-radius: 10px !important;
+  background-color: var(--creme-brulee);
+  color: var(--inkwell) !important; /* ✅ always visible */
+  font-family: "Poiret One", sans-serif;
+  font-weight: 600;
+  padding: 0 18px;
+  border: none;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-.navbar-search .search-btn:hover {
-  background-color: #e7e7e7;
-  color: #000;
+.search-btn:hover {
+  background-color: var(--au-lait);
+  color: var(--inkwell) !important;
 }
-
-
-/* Event images  */
-
+/* ===============================
+    EVENT IMAGES & CARDS
+  =============================== */
 .event-image-container {
-  width: 400px;           /* Adjust to your preference */
-  height: 400px;          /* Makes it a square */
-  overflow: hidden;       /* Hides parts of the image that overflow */
-  border-radius: 10px;    /* Optional – soft corners */
+  width: 400px;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;         /* Center the container */
-  background-color: #000; /* Optional – adds subtle background contrast */
+  margin: 0 auto;
+  background-color: #000;
 }
 
 .event-image-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover;      /* Keeps aspect ratio but fills the square */
-  object-position: center; /* Centers the image */
+  object-fit: cover;
+  object-position: center;
 }
 
-
-/* Consistent event card image sizing */
 .card-img-top {
   width: 100%;
-  height: 250px;          /* uniform height for all cards */
-  object-fit: cover;      /* keeps proportions and crops edges if needed */
+  height: 250px;
+  object-fit: cover;
   object-position: center;
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
 }
 
-/* hover effect for interactivity */
+/* --- Card hover effect --- */
 .card:hover {
   transform: translateY(-4px);
   transition: all 0.2s ease-in-out;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
+
 .card-title {
   font-weight: 650;
   color: var(--creme-brulee);
 }
+
 .card-text {
-  font-family:'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   color: var(--lunar-eclipse);
 }
 
-/* Buttons (Search button for nav) */
+
+
+
+/* ===============================
+    EVENT STATUS
+  =============================== */
+
+
+.event-status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 6px;
+}
+
+/* Custom color styling for each status */
+.event-status {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 2;
+}
+
+/* Color themes for each status */
+.status-upcoming {
+  background-color: var(--creme-brulee);
+  color: var(--inkwell);
+}
+
+.status-soldout {
+  background-color: var(--lunar-eclipse);
+  color: var(--au-lait);
+}
+
+.status-inactive {
+  background-color: #69593a;
+  color: var(--au-lait);
+}
+.status-cancelled {
+  background-color: #362b16;
+  color: var(--au-lait);
+}
+
+.status-other {
+  background-color: var(--au-lait);
+  color: var(--inkwell);
+  border: 1px solid var(--creme-brulee);
+}
+
+
+/* ===============================
+    BUTTONS
+  =============================== */
 .btn-outline-light {
   border-color: var(--creme-brulee);
   color: var(--creme-brulee);
 }
+
 .btn-outline-light:hover {
   background-color: var(--creme-brulee);
   color: var(--inkwell);
 }
 
-/* Footer */
-/* --- Footer always sticks to bottom --- */
-footer {
-  background-color: var(--inkwell);
-  color: var(--creme-brulee);
-  text-align: center;
-  padding: 1rem 0;
-  margin-top: auto; /* ✅ pushes it to bottom when content is short */
+/* ===============================
+    CAROUSEL
+  =============================== */
+.carousel {
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.carousel-image {
+  height: 600px;
+  object-fit: cover;
   width: 100%;
-  font-size: 0.9rem;
+}
+
+.carousel-caption h2 {
+  color: var(--creme-brulee);
+  font-family: "Fascinate", system-ui;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.carousel-caption p {
+  color: var(--au-lait);
+  font-family: "Poiret One", sans-serif;
+  font-weight: 600;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ===============================
+    ABOUT US SECTION
+  =============================== */
+
+.about-section {
+  background: var(--fawn);
+}
+
+.about-box {
+  max-width: 900px;
+  background: (--au-lait);
+  backdrop-filter: blur(8px);
+  border: 2px solid var(--creme-brulee);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-section p {
+  line-height: 1.7;
+  color: var(--inkwell);
+}
+
+.about-section h2 {
+  color: var(--creme-brulee);
+  text-shadow: 2px 2px 8px rgba(153, 153, 153, 0.4);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===============================
+    EVENTS SECTION
+  =============================== */
+.events-container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .section-title {
@@ -168,46 +328,115 @@ footer {
   margin: 30px 0 15px;
   color: #1a1a2e;
 }
+
 .event-card img {
   height: 200px;
   object-fit: cover;
   border-radius: 8px;
 }
 
-
-/* Optional: give carousel a nice ratio and smooth edges */
-.carousel {
-  max-width: 1200px;
-  margin: 0 auto;
-
-  overflow: hidden;
-}
-
-/* Make carousel images prettier and not stretched */
-.carousel-image {
-  height: 600px;
-  object-fit: cover;
+/* ===============================
+    FOOTER
+  =============================== */
+footer {
+  background-color: var(--inkwell);
+  color: var(--creme-brulee);
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: auto;
   width: 100%;
+  font-size: 0.9rem;
 }
 
-/* Event card area stays aligned with carousel */
-.events-container {
-  max-width: 1200px;
-  margin: 0 auto;
+/* ===============================
+    RESPONSIVE DESIGN
+  =============================== */
+
+@media (min-width: 992px) {
+  .navbar .container-fluid {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* centers content horizontally */
+    gap: 40px;               /* space between logo, search bar, and nav links */
+  }
+
+  .navbar-brand {
+    margin-left: 40px;       /* pulls logo slightly away from page edge */
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-search {
+    position: relative;
+    top: 0;
+    transform: translateY(2px); /* visually aligns input & button */
+  }
+
+  .navbar-nav {
+    margin-left: 40px;       /* balances spacing on right side */
+  }
 }
 
 
 
 
-/* Navbar search bar styling */
-.navbar form input[type="search"] {
-  border-radius: 20px;
-  border: none;
-  padding: 0.4rem 1rem;
-  outline: none;
+
+/* --- Tablets & small laptops --- */
+@media (max-width: 991px) {
+  .navbar-search {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .navbar-search .search-input {
+    width: 100%;
+    margin: 8px 0;
+  }
+
+  .navbar-search .search-btn {
+    width: 100%;
+  }
+
+  .navbar-nav {
+    width: 100%;
+    text-align: center;
+    background-color: var(--inkwell);
+    padding-bottom: 10px;
+  }
+
+  .navbar-nav .nav-link {
+    color: var(--creme-brulee) !important;
+    padding: 8px 0;
+  }
 }
 
-.navbar form .btn {
-  border-radius: 20px;
-  padding: 0.3rem 1rem;
+/* --- Mobile phones --- */
+@media (max-width: 768px) {
+  .navbar .form-control {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .navbar .search-btn {
+    width: 100%;
+  }
+
+  .navbar-nav {
+    text-align: center;
+  }
+}
+
+/* --- Small screens --- */
+@media (max-width: 576px) {
+  .carousel-image {
+    height: 30vh;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .form-select {
+    width: 100% !important;
+  }
 }

@@ -1,16 +1,38 @@
 {% extends 'base.html' %}
 {% block content %}
 
+
+
 <!-- ===== Carousel ===== -->
 <div id="mainCarousel" class="carousel slide carousel-fade mb-5" data-bs-ride="carousel">
   <div class="carousel-inner">
+
+      <!-- Welcome / About Slide -->
+    <div class="carousel-item active">
+      <img src="{{ url_for('static', filename='img/intro.webp') }}" 
+            class="d-block w-100 carousel-image" 
+            alt="Welcome Banner">
+      <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-4">
+        <h2 class="fw-bold text-uppercase">Discover Unforgettable Experiences</h2>
+        <p class="fs-5">
+          Our platform connects you with the most exciting events happening around you —
+        from intimate live gigs and electrifying concerts to outdoor festivals and
+        exclusive cultural showcases. Whether you're chasing the thrill of your
+        favorite artist on stage or looking to explore something new, we make discovering
+        and booking tickets effortless. Join a community of passionate fans and let every
+        night out become a story worth telling.
+        </p>
+      </div>
+    </div>
+
+    <!-- Event Slides -->
     {% for event in carousel_events %}
       <div class="carousel-item {% if loop.first %}active{% endif %}">
         <img src="{{ url_for('static', filename='img/' + event.img) }}" 
             class="d-block w-100 carousel-image" 
             alt="{{ event.title }}">
         <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
-          <h5>{{ event.title }}</h5>
+          <h2>{{ event.title }}</h5>
           <p>{{ event.description[:100] }}...</p>
         </div>
       </div>
@@ -23,6 +45,26 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
   </button>
 </div>
+
+<section class="about-section text-center py-5">
+  <div class="container">
+    <div class="about-box mx-auto p-5 rounded-4 shadow-lg">
+      <h2 class="fw-bold text-uppercase mb-3"
+          style="color: var(--creme-brulee); font-family: 'Fascinate', system-ui;">
+        Discover Unforgettable Experiences
+      </h2>
+      <p class="lead mt-3"
+        style="color: var(--inkwell); font-family: 'Poiret One', sans-serif; font-weight: 600;">
+        Our platform connects you with the most exciting events happening around you —
+        from intimate live gigs and electrifying concerts to outdoor festivals and
+        exclusive cultural showcases. Whether you're chasing the thrill of your
+        favorite artist on stage or looking to explore something new, we make discovering
+        and booking tickets effortless. Join a community of passionate fans and let every
+        night out become a story worth telling.
+      </p>
+    </div>
+  </div>
+</section>
 
 <!-- ===== Filter Dropdown ===== -->
 <div class="container mb-4">
@@ -38,27 +80,42 @@
   </form>
 </div>
 
+
+
+
+
 <!-- ===== Event Cards ===== -->
 <div class="events-container">
   <h2 class="mb-4 text-center">Upcoming Events</h2>
   <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for event in events %}
-      <div class="col">
-        <div class="card h-100 shadow-sm">
-          <img src="{{ url_for('static', filename='img/' + event.img) }}" 
-              class="card-img-top" 
-              alt="{{ event.title }}">
-          <div class="card-body">
-            <h5 class="card-title">{{ event.title }}</h5>
-            <p class="card-text">{{ event.description }}</p>
-          </div>
-          <div class="card-footer bg-transparent">
-            <a href="{{ url_for('main.event_detail', event_id=event.event_id) }}" 
-              class="btn btn-primary w-100">View Details</a>
+      {% for event in events %}
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <img src="{{ url_for('static', filename='img/' + event.img) }}" 
+                class="card-img-top" 
+                alt="{{ event.title }}">
+              <div class="card-body">
+                <h5 class="card-title">{{ event.title }}</h5>
+                <p class="card-text">{{ event.description }}</p>
+                
+                <!-- Event Status Badge -->
+                <span class="event-status 
+                  {% if event.status == 'Upcoming' %}status-upcoming
+                  {% elif event.status == 'Sold Out' %}status-soldout
+                  {% elif event.status == 'Inactive' %}status-inactive
+                  {% elif event.status == 'Cancelled' %}status-cancelled 
+                  {% else %}status-other{% endif %}">
+                  {{ event.status }}
+                </span>
+              </div>
+
+            <div class="card-footer bg-transparent">
+              <a href="{{ url_for('main.event_detail', event_id=event.event_id) }}" 
+                class="btn btn-primary w-100">View Details</a>
+            </div>
           </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
   </div>
 </div>
 
