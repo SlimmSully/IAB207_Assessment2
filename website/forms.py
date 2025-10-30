@@ -11,13 +11,11 @@ class LoginForm(FlaskForm):
 # this is the registration form
 class RegisterForm(FlaskForm):
     user_name = StringField("User Name", validators=[InputRequired()])
-    email     = StringField("Email Address", validators=[Email("Please enter a valid email")])
+    email = StringField("Email Address",validators=[InputRequired(), Length(max=120)],filters=[lambda x: x.strip() if x else x],)
     # linking two fields - password should be equal to data entered in confirm
     password  = PasswordField("Password", validators=[InputRequired(),
                   EqualTo('confirm', message="Passwords should match")])
     confirm   = PasswordField("Confirm Password")
-
-    # additional fields required by rubric
     first_name = StringField("First Name", validators=[InputRequired(), Length(max=50)])
     last_name  = StringField("Surname",    validators=[InputRequired(), Length(max=50)])
     phone      = StringField("Contact Number", validators=[Optional(), Length(max=20)])
