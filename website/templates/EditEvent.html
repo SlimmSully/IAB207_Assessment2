@@ -10,7 +10,8 @@
       enctype="multipart/form-data" class="row g-3">
       {{ form.csrf_token }}
 
-            <div class="col-md-8">
+      <!-- Event Info -->
+      <div class="col-md-8">
         {{ form.title.label(class="form-label") }}
         {{ form.title(class="form-control", placeholder="Event Title") }}
       </div>
@@ -60,25 +61,35 @@
         </select>
       </div>
 
-
       <hr class="my-4">
-      <h5 class="fw-semibold">Ticket Types</h5>
-
+      <h5 class="fw-semibold">Types of Ticekts</h5>
+      
       <div id="ticket-types-wrapper">
         {% for t in ticket_types %}
-        <div class="row g-3 ticket-type-row mb-2">
+        <div class="row g-3 align-items-center ticket-type-row mb-2">
+          <input type="hidden" name="ticket_id[]" value="{{ t.ticket_type_id }}">
+
           <div class="col-md-4">
-            <input class="form-control" name="ticket_label[]" value="{{ t.label }}" required>
+            <input class="form-control" name="ticket_label[]" value="{{ t.label }}" placeholder="Label" required>
           </div>
-          <div class="col-md-4">
-            <input type="number" class="form-control" name="ticket_price[]" value="{{ t.price }}" min="0" required>
+
+          <div class="col-md-3">
+            <input type="number" class="form-control" name="ticket_price[]" value="{{ t.price }}" placeholder="Price" min="0" required>
           </div>
-          <div class="col-md-4">
-            <input type="number" class="form-control" name="ticket_quota[]" value="{{ t.quota }}" min="1" required>
+
+          <div class="col-md-3">
+            <input type="number" class="form-control" name="ticket_quota[]" value="{{ t.quota }}" placeholder="Quota" min="1" required>
+          </div>
+
+          <div class="col-md-2">
+            <button type="button" class="btn btn-outline-danger remove-ticket-btn">Remove</button>
           </div>
         </div>
         {% endfor %}
       </div>
+
+
+
 
       <button type="button" id="add-ticket-btn" class="btn btn-outline-secondary btn-sm my-2">
         Add another ticket type
@@ -88,24 +99,51 @@
         <button type="submit" class="btn btn-dark">Save Changes</button>
         <a href="{{ url_for('main.event_detail', event_id=event.event_id) }}" class="btn btn-outline-secondary">Cancel</a>
       </div>
-
     </form>
   </div>
 </main>
 
 <script>
-/* Re-use the same JS from CreateEvent.html */
+// Add new ticket type
 document.getElementById("add-ticket-btn").addEventListener("click", function () {
-    const wrapper = document.getElementById("ticket-types-wrapper");
-    const newRow = document.createElement("div");
-    newRow.classList.add("row", "g-3", "ticket-type-row", "mb-2");
-    newRow.innerHTML = `
-      <div class="col-md-4"><input class="form-control" name="ticket_label[]" placeholder="Label" required></div>
-      <div class="col-md-4"><input type="number" class="form-control" name="ticket_price[]" placeholder="Price" min="0" required></div>
-      <div class="col-md-4"><input type="number" class="form-control" name="ticket_quota[]" placeholder="Quota" min="1" required></div>
-    `;
-    wrapper.appendChild(newRow);
+  const wrapper = document.getElementById("ticket-types-wrapper");
+  const newRow = document.createElement("div");
+  newRow.classList.add("row", "g-3", "ticket-type-row", "mb-2", "align-items-end");
+  newRow.innerHTML = `
+    <div class="col-md-3">
+      <input class="form-control" name="ticket_label[]" placeholder="Label" required>
+    </div>
+    <div class="col-md-3">
+      <input type="number" class="form-control" name="ticket_price[]" placeholder="Price" min="0" required>
+    </div>
+    <div class="col-md-3">
+      <input type="number" class="form-control" name="ticket_quota[]" placeholder="Quota" min="1" required>
+    </div>
+    <div class="col-md-3">
+      <button type="button" class="btn btn-outline-danger remove-ticket-btn">Remove</button>
+    </div>
+  `;
+  wrapper.appendChild(newRow);
+  updateRemoveButtons();
 });
+
+// Remove ticket type (with min 1 check)
+function updateRemoveButtons() {
+  document.querySelectorAll(".remove-ticket-btn").forEach(btn => {
+    btn.onclick = () => {
+      const wrapper = document.getElementById("ticket-types-wrapper");
+      const rows = wrapper.querySelectorAll(".ticket-type-row");
+      if (rows.length > 1) {
+        btn.closest(".ticket-type-row").remove();
+      } else {
+        alert("At least one ticket type is required.");
+      }
+    };
+  });
+}
+
+// Initialize remove buttons on page load
+updateRemoveButtons();
 </script>
 
 {% endblock %}
