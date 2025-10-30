@@ -47,4 +47,9 @@ def create_app():
     def server_error(e):
         return render_template('500.html'), 500
 
+    #makes tables
+    from . import models
+    with app.app_context():
+        db.create_all()
+
     return app
