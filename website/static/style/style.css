@@ -9,6 +9,7 @@ body {
   font-family: "Poiret One", sans-serif;
   font-weight: 400;
   font-style: normal;
+  font-weight: bolder;
   background-color: var(--au-lait);
   color: var(--inkwell);
 }
@@ -54,13 +55,66 @@ header.navbar {
   padding-bottom: 0.2rem !important;
 }
 
-
-
-/* Event card layout */
-.events-container {
-  max-width: 1200px;
-  margin: 0 auto;
+/* --- Navbar Search Bar Styling --- */
+.navbar-search {
+  display: flex;
+  align-items: center;
+  position: relative;
+  top: 8px; 
 }
+
+.navbar-search .search-input {
+  width: 320px;           
+  height: 38px;           /* consistent size */
+  font-size: 0.9rem;
+  border-radius: 15px !important;     /* less rounded */
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+  color: #333;
+  margin-right: 10px;     /* space between input and button */
+  transition: all 0.2s ease-in-out;
+}
+
+.navbar-search .search-input:focus {
+  outline: none;
+  border-color: #aaa;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+.navbar-search .search-btn {
+  height: 38px;
+  line-height: 1;
+  border-radius: 15px !important; 
+  padding: 0 14px;
+}
+
+.navbar-search .search-btn:hover {
+  background-color: #e7e7e7;
+  color: #000;
+}
+
+
+/* Event images  */
+
+.event-image-container {
+  width: 400px;           /* Adjust to your preference */
+  height: 400px;          /* Makes it a square */
+  overflow: hidden;       /* Hides parts of the image that overflow */
+  border-radius: 10px;    /* Optional – soft corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;         /* Center the container */
+  background-color: #000; /* Optional – adds subtle background contrast */
+}
+
+.event-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* Keeps aspect ratio but fills the square */
+  object-position: center; /* Centers the image */
+}
+
 
 /* Consistent event card image sizing */
 .card-img-top {
@@ -72,7 +126,7 @@ header.navbar {
   border-top-right-radius: 0.5rem;
 }
 
-/* Optional hover effect for interactivity */
+/* hover effect for interactivity */
 .card:hover {
   transform: translateY(-4px);
   transition: all 0.2s ease-in-out;
@@ -87,7 +141,7 @@ header.navbar {
   color: var(--lunar-eclipse);
 }
 
-/* Buttons (icons in header) */
+/* Buttons (Search button for nav) */
 .btn-outline-light {
   border-color: var(--creme-brulee);
   color: var(--creme-brulee);
@@ -98,18 +152,15 @@ header.navbar {
 }
 
 /* Footer */
-.footer {
+/* --- Footer always sticks to bottom --- */
+footer {
   background-color: var(--inkwell);
-  border-top: 2px solid var(--lunar-eclipse);
-  position: relative;
-  bottom: 0;
-  width:100%;
-  height:170px;   /* Height of the footer */
-    }
-
-
-.footer a {
-  color: var(--au-lait);
+  color: var(--creme-brulee);
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: auto; /* ✅ pushes it to bottom when content is short */
+  width: 100%;
+  font-size: 0.9rem;
 }
 
 .section-title {

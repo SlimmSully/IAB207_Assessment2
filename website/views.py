@@ -20,20 +20,18 @@ def index():
         events = Event.query.all()
     carousel_events = Event.query.order_by(db.func.random()).limit(3).all()
     return render_template('index.html', events=events, genres=genres,
-                           selected_genre=selected_genre, carousel_events=carousel_events)
+                        selected_genre=selected_genre, carousel_events=carousel_events)
 
 from flask import request
 
 @main_bp.route('/search')
 def search():
-    query = request.args.get('q', '')
-    if query:
-        # Search title or description (case-insensitive)
-        events = Event.query.filter(
-            Event.title.ilike(f'%{query}%') | Event.description.ilike(f'%{query}%')
-        ).all()
+    query = request.args.get('query', '').strip()
+    if not query:
+        events = Event.query.all()
     else:
-        events = []
+        events = Event.query.filter(Event.title.ilike(f'%{query}%')).all()
+    
     return render_template('search_results.html', events=events, query=query)
 
 
