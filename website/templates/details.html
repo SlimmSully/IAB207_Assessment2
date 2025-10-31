@@ -25,8 +25,7 @@
       {% endif %}
       <h2 class="fw-bold text-inkwell">{{ event.title }}
         <span id="eventStatus"
-              class="badge 
-              {% if event.status == 'Open' %}bg-success{% elif event.status == 'Cancelled' %}bg-danger{% else %}bg-secondary{% endif %}">
+              class="badge {% if event.status == 'Open' %}bg-success{% elif event.status == 'Sold Out' %}bg-dark{% elif event.status == 'Cancelled' %}bg-danger{% elif event.status == 'Inactive' %}bg-secondary{% else %}bg-light text-dark{% endif %}">
           {{ event.status }}
         </span>
       </h2> 
@@ -69,9 +68,11 @@
         </div>
 
       {% elif event.status == 'Sold Out' %}
-        <button class="btn btn-secondary" disabled>Sold Out</button>
+        <button class="btn btn-dark" disabled>Sold Out</button>
       {% elif event.status == 'Cancelled' %}
         <button class="btn btn-danger" disabled>Cancelled</button>
+      {% elif event.status == 'Inactive' %}
+        <button class="btn btn-secondary" disabled>Inactive</button>
       {% endif %}
     </div>
 

@@ -1,6 +1,6 @@
 # website/models.py
 from . import db
-from datetime import datetime
+from datetime import datetime, date
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -56,6 +56,12 @@ class Event(db.Model):
 
     def __repr__(self):
         return f'<Event {self.title}>'
+    
+    def update_status_if_inactive(self):
+        # set status to 'Inactive' if the event date is in the past
+        if self.event_date and self.event_date < date.today() and self.status not in ['Cancelled']:
+            self.status = 'Inactive'
+            db.session.commit()
 
 # COMMENT MODEL
 class Comment(db.Model):

@@ -41,6 +41,7 @@ def search():
 def event_detail(event_id):
     
     event = Event.query.get_or_404(event_id)
+    event.update_status_if_inactive()  # Update event status if needed
     comments = Comment.query.filter_by(event_id=event_id).order_by(Comment.posted_at.desc()).all()
     ticket_types = TicketType.query.filter_by(event_id=event.event_id).all()
     booking_message = None
