@@ -47,7 +47,7 @@ class Event(db.Model):
     start_time = db.Column(db.Time)
     end_time = db.Column(db.Time)
     img = db.Column(db.String(200))
-    status = db.Column(db.String(20), default='Open')  # Open / Sold Out / Cancelled / Inactive
+    status = db.Column(db.String(20), default='Open') 
     created_by = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     created_at = db.Column(db.DateTime, default=datetime.now)
 

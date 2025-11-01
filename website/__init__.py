@@ -1,4 +1,5 @@
 from flask import Flask
+import os
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -15,8 +16,8 @@ def create_app():
     app.secret_key = 'somesecretkey'
 
     # Configuration of database\
-    
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../instance/main.db'
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(base_dir, 'instance', 'main.db')}"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     Bootstrap5(app)
     db.init_app(app)
